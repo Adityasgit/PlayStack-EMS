@@ -9,6 +9,7 @@ import dashboardRoutes from './routes/dashboard.routes';
 import uploadRoutes from './routes/upload.routes';
 import activityRoutes from './routes/activity.routes';
 import taskRoutes from './routes/task.routes';
+import seedRoutes from './routes/seed.routes';
 
 export function createApp() {
   const app = express();
@@ -41,6 +42,7 @@ export function createApp() {
   app.use('/api/upload', uploadRoutes);
   app.use('/api/activity', activityRoutes);
   app.use('/api/tasks', taskRoutes);
+  app.use('/api/seed', seedRoutes);
 
   // Health check
   app.get('/api/health', (_req: Request, res: Response) => {

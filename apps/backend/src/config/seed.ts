@@ -2,14 +2,32 @@ import { Employee } from '../models/Employee';
 import { Task } from '../models/Task';
 import { hashPassword } from '../lib/bcrypt';
 
+/**
+ * Seed the database with a Super Admin and sample employees/tasks.
+ *
+ * This function is **idempotent** — it checks for existing data before
+ * inserting so it can safely be called on every server start.
+ *
+ * Set SEED_RESET=true to wipe and re-seed from scratch (dev only).
+ */
 export async function seedSuperAdmin(): Promise<void> {
   try {
-    // 1. Seed Super Admin
+    const shouldReset = process.env.SEED_RESET === 'true';
+
+    // ── Optional: wipe everything for a clean slate (dev only) ─────────
+    if (shouldReset) {
+      await Task.deleteMany({});
+      await Employee.deleteMany({});
+      console.log('🧹 SEED_RESET=true — cleared all employees and tasks.');
+    }
+
+    // ── 1. Super Admin ────────────────────────────────────────────────
     let superAdmin = await Employee.findOne({ role: 'super_admin' });
-    const adminEmail = process.env.SEED_ADMIN_EMAIL || 'admin@company.com';
-    const adminPassword = process.env.SEED_ADMIN_PASSWORD || 'Admin@1234';
 
     if (!superAdmin) {
+      const adminEmail = process.env.SEED_ADMIN_EMAIL || 'admin@company.com';
+      const adminPassword = process.env.SEED_ADMIN_PASSWORD || 'Admin@1234';
+
       superAdmin = await Employee.create({
         employeeId: 'EMP-1000',
         name: 'Super Admin',
@@ -23,18 +41,20 @@ export async function seedSuperAdmin(): Promise<void> {
         role: 'super_admin',
       });
       console.log(`🌱 Seeded Super Admin: ${adminEmail} / ${adminPassword}`);
+    } else {
+      console.log('ℹ️  Super Admin already exists — skipping.');
     }
 
-    // 2. Check if dummy data is already seeded
+    // ── 2. Dummy employees + tasks (only if the DB is nearly empty) ───
     const employeeCount = await Employee.countDocuments({});
     if (employeeCount > 1) {
-      console.log('Database already has employee data. Skipping dummy seeding.');
+      console.log(`ℹ️  ${employeeCount} employees found — skipping dummy seed.`);
       return;
     }
 
     const defaultPassword = await hashPassword('Password@1234');
 
-    // 3. Seed HR Manager reporting to Super Admin
+    // HR Manager → reports to Super Admin
     const hrManager = await Employee.create({
       employeeId: 'EMP-1001',
       name: 'Sarah Jenkins',
@@ -43,13 +63,13 @@ export async function seedSuperAdmin(): Promise<void> {
       department: 'HR',
       designation: 'HR Manager',
       salary: 95000,
-      joiningDate: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000), // 1 year ago
+      joiningDate: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
       status: 'active',
       role: 'hr_manager',
       reportingManager: superAdmin._id,
     });
 
-    // 4. Seed Engineering Manager reporting to Super Admin
+    // Engineering Manager → reports to Super Admin
     const engManager = await Employee.create({
       employeeId: 'EMP-1002',
       name: 'Alex Rivera',
@@ -58,13 +78,13 @@ export async function seedSuperAdmin(): Promise<void> {
       department: 'Engineering',
       designation: 'Engineering Manager',
       salary: 120000,
-      joiningDate: new Date(Date.now() - 180 * 24 * 60 * 60 * 1000), // 6 months ago
+      joiningDate: new Date(Date.now() - 180 * 24 * 60 * 60 * 1000),
       status: 'active',
-      role: 'hr_manager', // Grant manager powers to manage employees
+      role: 'hr_manager',
       reportingManager: superAdmin._id,
     });
 
-    // 5. Seed Senior Engineer reporting to Engineering Manager
+    // Senior Engineer → reports to Engineering Manager
     const srEngineer = await Employee.create({
       employeeId: 'EMP-1003',
       name: 'David Chen',
@@ -73,13 +93,13 @@ export async function seedSuperAdmin(): Promise<void> {
       department: 'Engineering',
       designation: 'Senior Software Engineer',
       salary: 105000,
-      joiningDate: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000), // 3 months ago
+      joiningDate: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000),
       status: 'active',
       role: 'employee',
       reportingManager: engManager._id,
     });
 
-    // 6. Seed Developer reporting to Senior Engineer
+    // Developer → reports to Senior Engineer
     const developer = await Employee.create({
       employeeId: 'EMP-1004',
       name: 'Maya Lin',
@@ -88,13 +108,13 @@ export async function seedSuperAdmin(): Promise<void> {
       department: 'Engineering',
       designation: 'Software Developer',
       salary: 75000,
-      joiningDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 1 month ago
+      joiningDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
       status: 'active',
       role: 'employee',
       reportingManager: srEngineer._id,
     });
 
-    // 7. Seed HR Specialist reporting to HR Manager
+    // HR Specialist → reports to HR Manager
     const hrSpecialist = await Employee.create({
       employeeId: 'EMP-1005',
       name: 'James Smith',
@@ -103,15 +123,15 @@ export async function seedSuperAdmin(): Promise<void> {
       department: 'HR',
       designation: 'HR Specialist',
       salary: 60000,
-      joiningDate: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000), // 15 days ago
+      joiningDate: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000),
       status: 'active',
       role: 'employee',
       reportingManager: hrManager._id,
     });
 
-    console.log('🌱 Seeded 5 dummy employee data.');
+    console.log('🌱 Seeded 5 dummy employees.');
 
-    // 8. Seed Dummy Tasks
+    // ── 3. Dummy tasks ────────────────────────────────────────────────
     await Task.create([
       {
         title: 'Review Q3 Hiring Budget',
@@ -119,7 +139,7 @@ export async function seedSuperAdmin(): Promise<void> {
         assignedTo: hrManager._id,
         priority: 'high',
         status: 'in_progress',
-        dueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
+        dueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
       },
       {
         title: 'Design Org Tree Expansion Layout',
@@ -151,7 +171,7 @@ export async function seedSuperAdmin(): Promise<void> {
         assignedTo: developer._id,
         priority: 'low',
         status: 'done',
-        dueDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+        dueDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
       },
       {
         title: 'Clean up deprecated router hooks',
@@ -172,7 +192,10 @@ export async function seedSuperAdmin(): Promise<void> {
     ]);
 
     console.log('🌱 Seeded 7 dummy tasks.');
+    console.log('✅ Seed complete: 1 Super Admin + 5 employees + 7 tasks');
   } catch (err) {
-    console.error('Seed error:', err);
+    console.error('❌ Seed error:', err);
+    // Re-throw so callers (db.ts, seed controller) can handle it properly
+    throw err;
   }
 }

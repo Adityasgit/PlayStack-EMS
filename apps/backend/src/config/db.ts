@@ -15,9 +15,7 @@ export async function connectDB(): Promise<void> {
     console.log('✅ MongoDB connected:', uri);
 
     // Seed super admin on first connection (non-test environments)
-    if (process.env.NODE_ENV !== 'test') {
-      await seedSuperAdmin();
-    }
+    await seedSuperAdmin();
   } catch (err) {
     console.error('❌ MongoDB connection error:', err);
     throw err;
