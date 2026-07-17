@@ -5,6 +5,7 @@ import { AnimatedCounter } from '@/components/shared/AnimatedCounter';
 import { PageHeader } from '@/components/shared/PageHeader';
 import { DepartmentChart } from '@/components/dashboard/DepartmentChart';
 import { JoiningTrendChart } from '@/components/dashboard/JoiningTrendChart';
+import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -79,9 +80,10 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent Employees */}
-      <Card>
-        <CardContent className="p-6">
-          <h3 className="text-sm font-semibold mb-4 text-muted-foreground uppercase tracking-wider">Recently Joined</h3>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card>
+          <CardContent className="p-6">
+            <h3 className="text-sm font-semibold mb-4 text-muted-foreground uppercase tracking-wider">Recently Joined</h3>
           {recentLoading ? (
             <LoadingSpinner size="sm" />
           ) : (
@@ -107,8 +109,15 @@ export default function DashboardPage() {
               ))}
             </div>
           )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-6">
+            <ActivityFeed />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const PROTECTED_PATHS = ['/dashboard', '/employees', '/organization', '/kanban', '/profile'];
+const PROTECTED_PATHS = ['/dashboard', '/employees', '/organization', '/profile', '/tasks', '/activity'];
 const AUTH_PATH = '/login';
 
 export function middleware(request: NextRequest) {
@@ -23,5 +23,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/employees/:path*', '/organization/:path*', '/kanban/:path*', '/profile/:path*', '/login'],
+  matcher: ['/dashboard/:path*', '/employees/:path*', '/organization/:path*', '/profile/:path*', '/tasks/:path*', '/activity/:path*', '/login'],
 };

@@ -16,7 +16,7 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/command';
-import { LayoutDashboard, Users, Network, Columns3, Moon, Sun, Plus } from 'lucide-react';
+import { LayoutDashboard, Users, Network, Columns3, Moon, Sun, Plus, CheckSquare, Activity } from 'lucide-react';
 
 export function CommandPalette() {
   const { open, setOpen } = useCommandStore();
@@ -81,10 +81,20 @@ export function CommandPalette() {
             <Network className="mr-2 h-4 w-4" />
             Org Chart
           </CommandItem>
+          <CommandItem onSelect={() => { router.push('/tasks'); setOpen(false); }}>
+            <CheckSquare className="mr-2 h-4 w-4" />
+            Tasks
+          </CommandItem>
           {isAdmin && (
             <CommandItem onSelect={() => { router.push('/kanban'); setOpen(false); }}>
               <Columns3 className="mr-2 h-4 w-4" />
               Kanban Board
+            </CommandItem>
+          )}
+          {isAdmin && (
+            <CommandItem onSelect={() => { router.push('/activity'); setOpen(false); }}>
+              <Activity className="mr-2 h-4 w-4" />
+              Activity Logs
             </CommandItem>
           )}
         </CommandGroup>

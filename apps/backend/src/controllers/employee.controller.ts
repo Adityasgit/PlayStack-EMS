@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import { Employee, DEPARTMENTS } from '../models/Employee';
 import { hashPassword } from '../lib/bcrypt';
 import { wouldCreateCycle } from '../lib/treeBuilder';
+import { logActivity } from '../lib/logger';
 import {
   createEmployeeSchema,
   updateEmployeeSchema,
@@ -124,6 +125,7 @@ export async function createEmployee(req: Request, res: Response): Promise<void>
 
   const result: any = employee.toObject();
   delete result.password;
+  logActivity('created employee', 'employee', employee._id.toString(), req.user!.id, { name: employee.name });
   res.status(201).json({ success: true, data: result });
 }
 
@@ -203,6 +205,7 @@ export async function updateEmployee(req: Request, res: Response): Promise<void>
     return;
   }
 
+  logActivity('updated employee', 'employee', id, req.user!.id, {});
   res.json({ success: true, data: updated });
 }
 
@@ -226,6 +229,7 @@ export async function deleteEmployee(req: Request, res: Response): Promise<void>
     return;
   }
 
+  logActivity('deleted employee', 'employee', id, req.user!.id, {});
   res.json({ success: true, data: { message: 'Employee deleted successfully' } });
 }
 

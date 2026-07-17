@@ -6,8 +6,11 @@ export interface OrgNode {
   designation: string;
   department: string;
   role: string;
+  status: string;
   profileImage?: string | null;
   reportingManager?: string | null;
+  taskCount?: number;
+  tasks?: any[];
   children: OrgNode[];
 }
 
@@ -49,8 +52,11 @@ export function buildOrgTree(employees: IEmployeeDocument[]): OrgNode[] {
       designation: emp.designation,
       department: emp.department,
       role: emp.role,
+      status: emp.status,
       profileImage: emp.profileImage,
       reportingManager: emp.reportingManager?.toString() ?? null,
+      taskCount: (emp as any).taskCount || 0,
+      tasks: (emp as any).tasks || [],
       children: [],
     });
   }

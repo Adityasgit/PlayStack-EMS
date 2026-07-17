@@ -23,23 +23,23 @@ export function JoiningTrendChart({ data }: JoiningTrendChartProps) {
     <div className="h-48">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={chartData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
           <XAxis
             dataKey="month"
-            tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
+            tick={{ fontSize: 12, fill: 'var(--muted-foreground)' }}
             axisLine={false}
             tickLine={false}
           />
           <YAxis
-            tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
+            tick={{ fontSize: 12, fill: 'var(--muted-foreground)' }}
             axisLine={false}
             tickLine={false}
             allowDecimals={false}
           />
           <Tooltip
             contentStyle={{
-              background: 'hsl(var(--card))',
-              border: '1px solid hsl(var(--border))',
+              background: 'var(--card)',
+              border: '1px solid var(--border)',
               borderRadius: 8,
               fontSize: 12,
             }}
@@ -47,7 +47,7 @@ export function JoiningTrendChart({ data }: JoiningTrendChartProps) {
           />
           <Bar
             dataKey="count"
-            fill="hsl(var(--primary))"
+            fill="var(--primary)"
             radius={[4, 4, 0, 0]}
             maxBarSize={32}
           />

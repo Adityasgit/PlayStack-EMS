@@ -2,7 +2,6 @@
 
 import { usePathname } from 'next/navigation';
 import { useCommandStore } from '@/store/commandStore';
-import { ThemeToggle } from './ThemeToggle';
 import { Button } from '@/components/ui/button';
 import { Search, Bell } from 'lucide-react';
 
@@ -12,6 +11,8 @@ const PAGE_TITLES: Record<string, string> = {
   '/employees/new': 'Create Employee',
   '/organization': 'Organization',
   '/kanban': 'Kanban Board',
+  '/tasks': 'Tasks',
+  '/activity': 'Activity Logs',
   '/profile': 'My Profile',
 };
 
@@ -56,8 +57,6 @@ export function Topbar() {
             3
           </span>
         </Button>
-
-        <ThemeToggle />
       </div>
     </header>
   );

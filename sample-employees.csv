@@ -1,0 +1,11 @@
+employee_id,name,email,phone,department,designation,salary,joining_date,status,role,reporting_manager,profile_image
+EMP001,Rajesh Kumar,rajesh.kumar@company.com,9876543210,Engineering,Software Engineer,75000,2024-01-15,active,employee,EMP002,
+EMP002,Priya Sharma,priya.sharma@company.com,9876543211,Engineering,Tech Lead,120000,2023-06-10,active,hr_manager,EMP005,
+EMP003,Amit Patel,amit.patel@company.com,9876543212,Marketing,Marketing Manager,95000,2023-09-20,active,employee,EMP005,
+EMP004,Sneha Gupta,sneha.gupta@company.com,9876543213,HR,HR Specialist,85000,2024-03-05,active,hr_manager,EMP005,
+EMP005,Vikram Singh,vikram.singh@company.com,9876543214,Management,CEO,180000,2022-01-01,active,super_admin,,
+EMP006,Neha Reddy,neha.reddy@company.com,9876543215,Finance,Financial Analyst,88000,2024-02-28,active,employee,EMP005,
+EMP007,Arjun Mehta,arjun.mehta@company.com,9876543216,Engineering,Senior Developer,95000,2023-04-15,active,employee,EMP002,
+EMP008,Kavita Nair,kavita.nair@company.com,9876543217,Design,UI/UX Designer,82000,2024-05-10,active,employee,EMP003,
+EMP009,Rohit Verma,rohit.verma@company.com,9876543218,Engineering,Junior Developer,65000,2024-06-01,inactive,employee,EMP002,
+EMP010,Ananya Das,ananya.das@company.com,9876543219,Marketing,Content Writer,60000,2024-04-20,active,employee,EMP003

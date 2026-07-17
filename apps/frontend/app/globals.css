@@ -201,6 +201,45 @@ body {
 .dark .react-flow__background { background: hsl(222.2 47% 8%); }
 .dark .react-flow__edge-path { stroke: hsl(217.2 32.6% 25%); }
 
+/* React Flow controls styling */
+.react-flow__controls {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--border) !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.react-flow__controls-button {
+  background: var(--card) !important;
+  border: none !important;
+  border-bottom: 1px solid var(--border) !important;
+  color: var(--foreground) !important;
+  fill: var(--foreground) !important;
+  transition: bg 0.2s, color 0.2s;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.react-flow__controls-button:last-child {
+  border-bottom: none !important;
+}
+
+.react-flow__controls-button:hover {
+  background: var(--muted) !important;
+}
+
+.react-flow__controls-button svg {
+  fill: currentColor !important;
+  color: var(--foreground) !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

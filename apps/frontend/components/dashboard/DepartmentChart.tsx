@@ -53,8 +53,8 @@ export function DepartmentChart({ data }: DepartmentChartProps) {
           </Pie>
           <Tooltip
             contentStyle={{
-              background: 'hsl(var(--card))',
-              border: '1px solid hsl(var(--border))',
+              background: 'var(--card)',
+              border: '1px solid var(--border)',
               borderRadius: 8,
               fontSize: 12,
             }}

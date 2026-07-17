@@ -9,12 +9,12 @@ import {
   LayoutDashboard,
   Users,
   Network,
-  Columns3,
   UserCircle,
+  CheckSquare,
   ChevronsLeft,
   ChevronsRight,
   LogOut,
-  Shield,
+  Activity,
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
@@ -30,9 +30,10 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { label: 'Organization', href: '/organization', icon: Network },
   { label: 'Employees', href: '/employees', icon: Users },
-  { label: 'Org Chart', href: '/organization', icon: Network },
-  { label: 'Kanban', href: '/kanban', icon: Columns3, roles: ['super_admin', 'hr_manager'] },
+  { label: 'Tasks', href: '/tasks', icon: CheckSquare },
+  { label: 'Activity Logs', href: '/activity', icon: Activity, roles: ['super_admin', 'hr_manager'] },
   { label: 'Profile', href: '/profile', icon: UserCircle, roles: ['employee'] },
 ];
 
@@ -76,7 +77,7 @@ export function Sidebar() {
         <Separator />
 
         {/* Navigation */}
-        <nav className="flex-1 px-2 py-4 space-y-1">
+        <nav className="flex-1 px-2 py-4 flex flex-col gap-1">
           {filteredItems.map((item) => {
             const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
             const Icon = item.icon;
@@ -108,11 +109,9 @@ export function Sidebar() {
                     </AnimatePresence>
                   </button>
                 </TooltipTrigger>
-                {collapsed && (
-                  <TooltipContent side="right" sideOffset={8}>
-                    {item.label}
-                  </TooltipContent>
-                )}
+                <TooltipContent side="right" sideOffset={8}>
+                  {item.label}
+                </TooltipContent>
               </Tooltip>
             );
           })}
@@ -167,7 +166,7 @@ export function Sidebar() {
         {/* Collapse toggle */}
         <button
           onClick={toggle}
-          className="absolute top-4 -right-3 z-10 flex h-6 w-6 items-center justify-center rounded-full border bg-background text-muted-foreground hover:text-foreground transition-colors shadow-sm"
+          className="absolute top-5 right-5 z-10 flex h-6 w-6 items-center justify-center rounded-full border bg-background text-muted-foreground hover:text-foreground transition-colors shadow-sm"
         >
           {collapsed ? <ChevronsRight className="h-3 w-3" /> : <ChevronsLeft className="h-3 w-3" />}
         </button>

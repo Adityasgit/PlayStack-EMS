@@ -8,7 +8,7 @@ const config: Config = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
-  setupFilesAfterFramework: [],
+  setupFilesAfterEnv: [],
   globalSetup: undefined,
   globalTeardown: undefined,
 };

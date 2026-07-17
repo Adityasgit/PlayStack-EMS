@@ -59,6 +59,7 @@ export function useUpdateEmployee(id: string) {
       api.put<ApiResponse<IEmployee>>(`/api/employees/${id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: employeeKeys.all });
+      queryClient.invalidateQueries({ queryKey: ['org-tree'] });
     },
   });
 }
@@ -80,6 +81,7 @@ export function useAssignManager(id: string) {
       api.patch<ApiResponse<IEmployee>>(`/api/employees/${id}/manager`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: employeeKeys.all });
+      queryClient.invalidateQueries({ queryKey: ['org-tree'] });
     },
   });
 }

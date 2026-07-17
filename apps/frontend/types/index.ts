@@ -67,9 +67,12 @@ export interface OrgTreeNode {
   designation: string;
   department: string;
   role: Role;
+  status: Status;
   profileImage?: string | null;
   reportingManager?: string | null;
   employeeId?: string;
+  taskCount?: number;
+  tasks?: ITask[];
   children: OrgTreeNode[];
 }
 
@@ -82,4 +85,32 @@ export interface DashboardStats {
   byRole: { _id: string; count: number }[];
   joiningTrend: { _id: { month: number; year: number }; count: number }[];
   recentlyJoined: IEmployee[];
+}
+
+// ── Tasks ─────────────────────────────────────────────────────────────────────
+export type TaskStatus = 'todo' | 'in_progress' | 'done';
+export type TaskPriority = 'low' | 'medium' | 'high';
+
+export interface ITask {
+  _id: string;
+  title: string;
+  description?: string | null;
+  assignedTo?: IEmployee | string | null;
+  priority: TaskPriority;
+  status: TaskStatus;
+  dueDate?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ── Activity Log ──────────────────────────────────────────────────────────────
+export interface IActivityLog {
+  _id: string;
+  action: string;
+  entity: 'task' | 'employee';
+  entityId: string;
+  performedBy: { _id: string; name: string; profileImage?: string | null; employeeId?: string };
+  meta?: Record<string, unknown>;
+  createdAt: string;
+  updatedAt: string;
 }

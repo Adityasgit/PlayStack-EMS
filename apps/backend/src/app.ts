@@ -7,6 +7,8 @@ import employeeRoutes from './routes/employee.routes';
 import organizationRoutes from './routes/organization.routes';
 import dashboardRoutes from './routes/dashboard.routes';
 import uploadRoutes from './routes/upload.routes';
+import activityRoutes from './routes/activity.routes';
+import taskRoutes from './routes/task.routes';
 
 export function createApp() {
   const app = express();
@@ -37,6 +39,8 @@ export function createApp() {
   app.use('/api/organization', organizationRoutes);
   app.use('/api/dashboard', dashboardRoutes);
   app.use('/api/upload', uploadRoutes);
+  app.use('/api/activity', activityRoutes);
+  app.use('/api/tasks', taskRoutes);
 
   // Health check
   app.get('/api/health', (_req: Request, res: Response) => {

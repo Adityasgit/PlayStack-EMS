@@ -8,7 +8,7 @@ export default function OrganizationPage() {
     <div>
       <PageHeader
         title="Organization"
-        subtitle="Interactive org chart — drag nodes to reassign managers"
+        subtitle="Manage hierarchy, assign tasks, and track your team — all in one place"
       />
       <OrgChart />
     </div>
