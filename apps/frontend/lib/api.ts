@@ -1,4 +1,7 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+// All API calls use relative URLs so they go through the Next.js rewrite proxy.
+// This makes cookies first-party (same-origin), eliminating Chrome's third-party
+// cookie blocking. The proxy in next.config.ts forwards /api/* to the backend.
+const API_PREFIX = '/api';
 
 class ApiError extends Error {
   constructor(
@@ -11,7 +14,10 @@ class ApiError extends Error {
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${BASE_URL}${path}`, {
+  // Prefix paths that don't already start with /api
+  const url = path.startsWith(API_PREFIX) ? path : `${API_PREFIX}${path}`;
+
+  const res = await fetch(url, {
     ...init,
     credentials: 'include',
     headers: {

@@ -58,7 +58,7 @@ export async function login(req: Request, res: Response): Promise<void> {
 }
 
 export async function logout(_req: Request, res: Response): Promise<void> {
-  res.clearCookie('token', { path: '/' }).json({ success: true, data: { message: 'Logged out' } });
+  res.clearCookie('token', COOKIE_OPTS).json({ success: true, data: { message: 'Logged out' } });
 }
 
 export async function getMe(req: Request, res: Response): Promise<void> {

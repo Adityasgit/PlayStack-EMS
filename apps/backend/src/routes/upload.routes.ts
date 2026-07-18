@@ -38,7 +38,9 @@ router.post('/', authMiddleware, upload.single('file'), (req: Request, res: Resp
     return;
   }
 
-  const url = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/uploads/${req.file.filename}`;
+  // Return a relative URL so the frontend proxy (/uploads/*) handles it.
+  // This avoids hardcoding the backend hostname and works in all environments.
+  const url = `/uploads/${req.file.filename}`;
   res.json({ success: true, data: { url } });
 });
 
