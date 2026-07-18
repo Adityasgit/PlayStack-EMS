@@ -24,11 +24,11 @@ const renderLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: an
 
 export function DepartmentChart({ data }: DepartmentChartProps) {
   if (!data.length) {
-    return <div className="h-48 flex items-center justify-center text-sm text-muted-foreground">No data available</div>;
+    return <div className="h-56 flex items-center justify-center text-sm text-muted-foreground">No data available</div>;
   }
 
   return (
-    <div className="h-48">
+    <div className="h-56">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie

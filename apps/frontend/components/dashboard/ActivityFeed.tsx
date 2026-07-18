@@ -5,7 +5,10 @@ import { useAuth } from '@/context/AuthContext';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
 import { getInitials } from '@/lib/utils';
-import { Activity } from 'lucide-react';
+import { Activity, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+
+const INITIAL_COUNT = 6;
 
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -29,41 +32,52 @@ export function ActivityFeed() {
   // Only show for SA / HR
   if (user?.role === 'employee') return null;
 
+  const allLogs = data?.data || [];
+  const visibleLogs = allLogs.slice(0, INITIAL_COUNT);
+  const hasMore = allLogs.length > INITIAL_COUNT;
+
   return (
     <div>
-      <h3 className="text-sm font-semibold mb-4 text-muted-foreground uppercase tracking-wider flex items-center gap-2">
-        <Activity className="h-4 w-4" /> Activity Log
-      </h3>
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+          <Activity className="h-3.5 w-3.5" /> Activity Log
+        </h3>
+        {hasMore && (
+          <Link href="/activity" className="text-[10px] text-muted-foreground hover:text-foreground transition-colors flex items-center gap-0.5">
+            See More <ArrowRight className="h-3 w-3" />
+          </Link>
+        )}
+      </div>
 
       {isLoading ? (
-        <div className="flex justify-center py-6"><LoadingSpinner size="sm" /></div>
-      ) : !data?.data?.length ? (
-        <p className="text-sm text-muted-foreground text-center py-6">No activity yet.</p>
+        <div className="flex justify-center py-4"><LoadingSpinner size="sm" /></div>
+      ) : !allLogs.length ? (
+        <p className="text-sm text-muted-foreground text-center py-4">No activity yet.</p>
       ) : (
         <div className="space-y-0">
-          {data.data.slice(0, 20).map((log, i) => (
-            <div key={log._id} className="flex gap-3 py-3 relative">
+          {visibleLogs.map((log, i) => (
+            <div key={log._id} className="flex gap-2.5 py-2 relative">
               {/* Timeline line */}
-              {i < data.data.slice(0, 20).length - 1 && (
-                <div className="absolute left-4 top-10 bottom-0 w-px bg-border" />
+              {i < visibleLogs.length - 1 && (
+                <div className="absolute left-3.5 top-9 bottom-0 w-px bg-border" />
               )}
 
-              <Avatar className="h-8 w-8 shrink-0 relative z-10">
+              <Avatar className="h-7 w-7 shrink-0 relative z-10">
                 <AvatarImage src={log.performedBy?.profileImage || undefined} />
-                <AvatarFallback className="text-xs bg-primary/10 text-primary">
+                <AvatarFallback className="text-[10px] bg-primary/10 text-primary">
                   {log.performedBy ? getInitials(log.performedBy.name) : '?'}
                 </AvatarFallback>
               </Avatar>
 
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-1.5 flex-wrap">
                   <span className="text-sm font-medium">{log.performedBy?.name}</span>
                   <span className="text-xs text-muted-foreground">{log.action}</span>
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${entityColor[log.entity] ?? 'bg-muted text-muted-foreground'}`}>
+                  <span className={`text-[10px] px-1 py-0 rounded-full font-medium ${entityColor[log.entity] ?? 'bg-muted text-muted-foreground'}`}>
                     {log.entity}
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground mt-0.5">{timeAgo(log.createdAt)}</p>
+                <p className="text-[11px] text-muted-foreground">{timeAgo(log.createdAt)}</p>
               </div>
             </div>
           ))}

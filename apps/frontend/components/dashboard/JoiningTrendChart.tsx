@@ -10,7 +10,7 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 
 export function JoiningTrendChart({ data }: JoiningTrendChartProps) {
   if (!data.length) {
-    return <div className="h-48 flex items-center justify-center text-sm text-muted-foreground">No data available</div>;
+    return <div className="h-56 flex items-center justify-center text-sm text-muted-foreground">No data available</div>;
   }
 
   const chartData = data.map((d) => ({
@@ -20,7 +20,7 @@ export function JoiningTrendChart({ data }: JoiningTrendChartProps) {
   }));
 
   return (
-    <div className="h-48">
+    <div className="h-56">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={chartData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
